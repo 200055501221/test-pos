@@ -10,6 +10,7 @@ public class PosTest3Application {
 	public static void main(String[] args) {
 
 		SpringApplication.run(PosTest3Application.class, args);
+		//this is a test
 	}
 
 }
