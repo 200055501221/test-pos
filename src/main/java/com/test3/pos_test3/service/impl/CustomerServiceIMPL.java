@@ -3,6 +3,7 @@ package com.test3.pos_test3.service.impl;
 import com.test3.pos_test3.dto.CustomerDTO;
 import com.test3.pos_test3.dto.request.CustomerUpdateDTO;
 import com.test3.pos_test3.entity.Customer;
+import com.test3.pos_test3.exception.NotFoundException;
 import com.test3.pos_test3.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,47 @@ public class CustomerServiceIMPL implements CustomerService{
     @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> getAllCustomers = customerRepo.findAll();
+
+        if(getAllCustomers.size()>0) {
+
+            List<CustomerDTO> customerDTOList = new ArrayList<>();
+
+            for (Customer customer : getAllCustomers) {
+                CustomerDTO customerDTO = new CustomerDTO(
+                        customer.getCustomerId(),
+                        customer.getCustomerName(),
+                        customer.getCustomerAddress(),
+                        customer.getCustomerSalary(),
+                        customer.getNic(),
+                        customer.isActive()
+                );
+                customerDTOList.add(customerDTO);
+            }
+
+            return customerDTOList;
+        }else {
+            throw new NotFoundException("No Customer Found");
+        }
+    }
+
+
+    @Override
+    public String deleteCustomer(int customerId) {
+
+        if (customerRepo.existsById(customerId)) {
+            customerRepo.deleteById(customerId);
+            return "Deleted Successfully "+customerId;
+        }
+        else{
+            throw new RuntimeException("No customer found for that id");
+        }
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomersByActiveState(boolean activeState) {
+
+
+        List<Customer> getAllCustomers = customerRepo.findAllByActiveEquals(activeState);
         List<CustomerDTO> customerDTOList = new ArrayList<>();
 
         for (Customer customer : getAllCustomers) {

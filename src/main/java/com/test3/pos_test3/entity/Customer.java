@@ -1,9 +1,7 @@
 package com.test3.pos_test3.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 public class Customer {
     @Id
     @Column(name="customer_id", length=45)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int customerId;
 
     @Column(name = "customer_name",length = 100,nullable = false)
